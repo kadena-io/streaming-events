@@ -25,7 +25,7 @@ library
   build-depends:
     , attoparsec            ^>=0.13
     , base                  >=4.9  && <5
-    , binary                >=0.8
+    , binary                ^>=0.8
     , bytestring            ^>=0.10
     , http-client           ^>=0.6
     , streaming             ^>=0.2
