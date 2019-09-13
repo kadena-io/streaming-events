@@ -27,7 +27,7 @@ library
     , base                  >=4.9  && <5
     , binary                ^>=0.8
     , bytestring            ^>=0.10
-    , http-client           ^>=0.6
+    , http-client           >= 0.5 && < 0.7
     , streaming             ^>=0.2
     , streaming-attoparsec  ^>=1.0
     , streaming-bytestring  ^>=0.1
