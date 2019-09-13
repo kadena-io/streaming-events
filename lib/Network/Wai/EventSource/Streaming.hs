@@ -87,7 +87,7 @@ comment :: Parser ServerEvent
 comment = CommentEvent <$> (char ':' *> chars <* eol)
 
 retry :: Parser ServerEvent
-retry = RetryEvent <$> (string "retry:" *> decimal)
+retry = RetryEvent <$> (string "retry:" *> decimal <* eol)
 
 chars :: Parser Builder
 chars = fromByteString <$> takeTill (== '\n')
