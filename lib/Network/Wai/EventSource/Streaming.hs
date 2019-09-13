@@ -48,15 +48,46 @@ fromBodyReader br = do
 -- NOTE: This currently ignores:
 --   * windows support for now, w.r.t. end-of-line characters
 --   * the optional starting byte-order-mark
---   * `CommentEvent`
---   * `RetryEvent`
 --   * `CloseEvent`
 
+{- EXAMPLES
+
+ServerEvent
+-----------
+event:New Event
+id:id
+data:data1
+data:data2
+data:data3
+
+CommentEvent
+------------
+:this is a comment
+
+RetryEvent
+----------
+retry:100
+
+CloseEvent
+----------
+No output - the connection is severed.
+
+-}
+
 event :: Parser ServerEvent
-event = ServerEvent
+event = (sevent <|> comment <|> retry) <* eol
+
+sevent :: Parser ServerEvent
+sevent = ServerEvent
   <$> optional (string "event" *> char ':' *> chars <* eol)
   <*> optional (string "id"    *> char ':' *> chars <* eol)
   <*> many     (string "data"  *> char ':' *> chars <* eol)
+
+comment :: Parser ServerEvent
+comment = CommentEvent <$> (char ':' *> chars <* eol)
+
+retry :: Parser ServerEvent
+retry = RetryEvent <$> (string "retry:" *> decimal)
 
 chars :: Parser Builder
 chars = fromByteString <$> takeTill (== '\n')
