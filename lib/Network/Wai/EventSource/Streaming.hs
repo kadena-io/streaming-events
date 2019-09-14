@@ -6,6 +6,9 @@
 -- License: BSD-3-Clause
 -- Maintainer: Colin Woodbury <colin@kadena.io>
 --
+-- Client-side consumption of the `ServerEvent` type from @wai-extra@ via the
+-- @streaming@ ecosystem.
+--
 module Network.Wai.EventSource.Streaming
   ( -- * `ServerEvent` Stream
     withEvents
@@ -31,6 +34,8 @@ import qualified Streaming.Prelude as SP
 -- | A low-level wrapper around `withResponse`. Provides a simple, unending
 -- source of `ServerEvent`s, presumably from an endpoint served via
 -- `Network.Wai.EventSource.eventSourceAppIO` or otherwise.
+--
+-- @since 1.0.0
 withEvents :: Request -> Manager -> (Stream (Of ServerEvent) IO () -> IO a) -> IO a
 withEvents r m f = withResponse r m $ f . g . responseBody
   where
@@ -74,6 +79,9 @@ No output - the connection is severed.
 
 -}
 
+-- | The underlying attoparsec `Parser`.
+--
+-- @since 1.0.0
 event :: Parser ServerEvent
 event = (sevent <|> comment <|> retry) <* eol
 

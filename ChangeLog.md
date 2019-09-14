@@ -1,3 +1,5 @@
-# Changelog for http-client-events
+# Changelog for `streaming-events`
 
-## Unreleased changes
+## 1.0.0
+
+- Initial release.
