@@ -1,6 +1,6 @@
 cabal-version:      2.2
 name:               streaming-events
-version:            1.0.0
+version:            1.0.1
 synopsis:           Client-side consumption of a ServerEvent.
 description:        Client-side consumption of a ServerEvent.
 homepage:           https://github.com/kadena-io/streaming-events
