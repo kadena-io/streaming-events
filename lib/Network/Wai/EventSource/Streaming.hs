@@ -12,6 +12,9 @@
 module Network.Wai.EventSource.Streaming
   ( -- * `ServerEvent` Stream
     withEvents
+    -- * Auto-conversion of `ServerEvent`s
+  , FromEvent(..)
+  , dataOnly
     -- * Attoparsec Parser
   , event
   ) where
@@ -20,8 +23,9 @@ import           Control.Applicative (many, optional)
 import           Control.Monad (unless)
 import           Data.Attoparsec.ByteString.Char8
 import qualified Data.Attoparsec.ByteString.Streaming as SA
-import           Data.Binary.Builder (Builder, fromByteString)
+import           Data.Binary.Builder (Builder, fromByteString, toLazyByteString)
 import qualified Data.ByteString as B
+import qualified Data.ByteString.Lazy as BL
 import qualified Data.ByteString.Streaming.Char8 as SB
 import           Network.HTTP.Client
 import           Network.Wai.EventSource (ServerEvent(..))
@@ -46,6 +50,24 @@ fromBodyReader :: BodyReader -> Stream (Of B.ByteString) IO ()
 fromBodyReader br = do
   bs <- liftIO $ brRead br
   unless (B.null bs) $ SP.yield bs >> fromBodyReader br
+
+--------------------------------------------------------------------------------
+-- FromEvent
+
+-- | Convert a `ServerEvent`'s @data@ field into some type.
+--
+-- @since 1.0.1
+class FromEvent a where
+  fromEvent :: B.ByteString -> Maybe a
+
+-- | A stream of only the @data@ fields of each consumed `ServerEvent`. Assumes
+-- that each @data@ field contains bytes of identical format, i.e. decodable by
+-- `FromEvent`. Silently skips over decoding failures.
+dataOnly :: (FromEvent a, Monad m) => Stream (Of ServerEvent) m r -> Stream (Of a) m r
+dataOnly = SP.mapMaybe (fromEvent . BL.toStrict . toLazyByteString) . SP.concat . SP.map f
+  where
+    f (ServerEvent _ _ d) = d
+    f _                   = []
 
 --------------------------------------------------------------------------------
 -- Parser
