@@ -1,4 +1,3 @@
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 -- |
@@ -27,15 +26,11 @@ import qualified Data.Attoparsec.ByteString.Streaming as SA
 import           Data.Binary.Builder (Builder, fromByteString, toLazyByteString)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
-#if MIN_VERSION_streaming_bytestring(0,1,7)
-import qualified Streaming.ByteString.Char8 as SB
-#else
-import qualified Data.ByteString.Streaming.Char8 as SB
-#endif
 import           Network.HTTP.Client
 import           Network.Wai.EventSource (ServerEvent(..))
 import           Prelude hiding (takeWhile)
 import           Streaming
+import qualified Streaming.ByteString.Char8 as SB
 import qualified Streaming.Prelude as SP
 
 ---
