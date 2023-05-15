@@ -1,8 +1,9 @@
 cabal-version:      2.2
 name:               streaming-events
 version:            1.0.1
+category:           Web
 synopsis:           Client-side consumption of a ServerEvent.
-description:        Client-side consumption of a ServerEvent.
+description:        Client-side consumption of a ServerEvent, using streaming library.
 homepage:           https://github.com/kadena-io/streaming-events
 author:             Colin Woodbury
 maintainer:         colin@kadena.io
@@ -13,6 +14,14 @@ build-type:         Simple
 extra-source-files:
   README.md
   ChangeLog.md
+tested-with: GHC == 8.10.7,
+             GHC == 9.0.2,
+             GHC == 9.2.7,
+             GHC == 9.4.5
+
+source-repository head
+  type:                git
+  location:            https://github.com/kadena-io/streaming-events.git
 
 library
   default-language: Haskell2010
@@ -23,12 +32,12 @@ library
     -Wincomplete-uni-patterns -Widentities
 
   build-depends:
-    , attoparsec            ^>=0.13
+    , attoparsec            >=0.13 && <0.15
     , base                  >=4.9  && <5
     , binary                ^>=0.8
-    , bytestring            ^>=0.10
-    , http-client           >= 0.5 && < 0.7
+    , bytestring            >=0.10 && <0.12
+    , http-client           >= 0.5 && <0.8
     , streaming             ^>=0.2
     , streaming-attoparsec  ^>=1.0
-    , streaming-bytestring  ^>=0.1
-    , wai-extra             ^>=3.0
+    , streaming-bytestring  >=0.2 && <0.4
+    , wai-extra             >=3.0 && <3.2

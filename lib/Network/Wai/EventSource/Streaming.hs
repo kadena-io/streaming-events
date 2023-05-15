@@ -26,11 +26,11 @@ import qualified Data.Attoparsec.ByteString.Streaming as SA
 import           Data.Binary.Builder (Builder, fromByteString, toLazyByteString)
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as BL
-import qualified Data.ByteString.Streaming.Char8 as SB
 import           Network.HTTP.Client
 import           Network.Wai.EventSource (ServerEvent(..))
 import           Prelude hiding (takeWhile)
 import           Streaming
+import qualified Streaming.ByteString.Char8 as SB
 import qualified Streaming.Prelude as SP
 
 ---
